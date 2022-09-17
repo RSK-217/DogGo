@@ -5,23 +5,18 @@ using System.Collections.Generic;
 
 namespace DogGo.Repositories
 {
-    public class WalkerRepository : IWalkerRepository
+    public class WalkerRepository : BaseRepository, IWalkerRepository
     {
-        private readonly IConfiguration _config;
-
         // The constructor accepts an IConfiguration object as a parameter. This class comes from the ASP.NET framework and is useful for retrieving things out of the appsettings.json file like connection strings.
-        public WalkerRepository(IConfiguration config)
-        {
-            _config = config;
-        }
+        public WalkerRepository(IConfiguration config) : base(config) { }
 
-        public SqlConnection Connection
-        {
-            get
-            {
-                return new SqlConnection(_config.GetConnectionString("DefaultConnection"));
-            }
-        }
+        private readonly string _baseSqlSelect = @"SELECT Walker.Id,
+                                                      Walker.[Name], 
+                                                      ImageUrl, 
+                                                      NeighborhoodId,
+                                                      Neighborhood.Name AS NeighborhoodName
+                                               FROM Walker
+                                               INNER JOIN Neighborhood ON Neighborhood.Id = NeighborhoodId ";
 
         public List<Walker> GetAllWalkers()
         {
@@ -30,28 +25,14 @@ namespace DogGo.Repositories
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"
-                        SELECT w.Id, 
-	                    w.[Name], 
-	                    w.ImageUrl, 
-	                    n.[Name] AS NeighborhoodName
-                        FROM Walker w
-                        INNER JOIN Neighborhood n ON w.NeighborhoodId = n.Id
-                    ";
+                    cmd.CommandText = _baseSqlSelect;
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         List<Walker> walkers = new List<Walker>();
                         while (reader.Read())
                         {
-                            Walker walker = new Walker
-                            {
-                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                                Name = reader.GetString(reader.GetOrdinal("Name")),
-                                ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl")),
-                                Neighborhood = new Neighborhood { Name = reader.GetString(reader.GetOrdinal("NeighborhoodName")) },
-                               
-                            };
+                            Walker walker = LoadFromData(reader);
 
                             walkers.Add(walker);
                         }
@@ -62,42 +43,40 @@ namespace DogGo.Repositories
             }
         }
 
-        public Walker GetWalkerById(int id)
+        public Walker? GetWalkerById(int id)
         {
             using (SqlConnection conn = Connection)
             {
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"
-                        SELECT Id, [Name], ImageUrl, NeighborhoodId
-                        FROM Walker
-                        WHERE Id = @id
-                    ";
+                    cmd.CommandText = $"{_baseSqlSelect} WHERE Walker.Id = @id";
 
                     cmd.Parameters.AddWithValue("@id", id);
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
+                        Walker? result = null;
                         if (reader.Read())
                         {
-                            Walker walker = new Walker
-                            {
-                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                                Name = reader.GetString(reader.GetOrdinal("Name")),
-                                ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl")),
-                                NeighborhoodId = reader.GetInt32(reader.GetOrdinal("NeighborhoodId"))
-                            };
+                            return LoadFromData(reader);
 
-                            return walker;
                         }
-                        else
-                        {
-                            return null;
-                        }
+                        return result;
                     }
                 }
             }
+        }
+        private Walker LoadFromData(SqlDataReader reader)
+        {
+            return new Walker
+            {
+                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                Name = reader.GetString(reader.GetOrdinal("Name")),
+                ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl")),
+                NeighborhoodId = reader.GetInt32(reader.GetOrdinal("NeighborhoodId")),
+                Neighborhood = new Neighborhood { Name = reader.GetString(reader.GetOrdinal("NeighborhoodName")) }
+            };
         }
     }
 }
