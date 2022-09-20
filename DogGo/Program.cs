@@ -1,3 +1,4 @@
+using DogGo.Interfaces;
 using DogGo.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddTransient<IWalkerRepository, WalkerRepository>();
 builder.Services.AddTransient<IOwnerRepository, OwnerRepository>();
+builder.Services.AddTransient<IDogRepository, DogRepository>();
 builder.Services.AddRazorPages();
 
 

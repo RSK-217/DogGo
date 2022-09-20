@@ -1,4 +1,5 @@
-﻿@model DogGo.Models.Owner
+﻿@using DogGo.Models
+@model DogGo.Models.Owner
 
 @{
     ViewData["Title"] = "Details";
@@ -46,6 +47,18 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Phone)
         </dd>
+    </dl>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">Dogs</dt>
+        <dd class="col-sm-10"></dd>
+        @foreach (Dog dog in Model.Dogs)
+        {
+            <dt class="col-sm-2"></dt>
+            <dd class="col-sm-10">
+                @dog.Name
+            </dd>
+        }
     </dl>
 </div>
 <div>
