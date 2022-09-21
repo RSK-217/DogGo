@@ -168,6 +168,7 @@ namespace DogGoMVC.Repositories
                 Notes = reader.GetString(reader.GetOrdinal("Notes")),
                 ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl")),
             };
+            
         }
     }
 }
