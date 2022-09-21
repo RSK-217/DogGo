@@ -8,15 +8,13 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IWalkerRepository, WalkerRepository>();
 builder.Services.AddTransient<IOwnerRepository, OwnerRepository>();
 builder.Services.AddTransient<IDogRepository, DogRepository>();
-builder.Services.AddRazorPages();
-
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error");
+    app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
@@ -29,10 +27,7 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-   name: "default",
-   pattern: "{controller=Home}/{action=Index}/{id?}");
-
-app.MapRazorPages();
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
-
