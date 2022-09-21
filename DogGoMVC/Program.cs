@@ -1,5 +1,5 @@
-using DogGo.Interfaces;
-using DogGo.Repositories;
+using DogGoMVC.Interfaces;
+using DogGoMVC.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,9 +1,9 @@
-﻿using DogGo.Interfaces;
-using DogGo.Models;
+﻿using DogGoMVC.Interfaces;
+using DogGoMVC.Models;
 
 using Microsoft.Data.SqlClient;
 
-namespace DogGo.Repositories
+namespace DogGoMVC.Repositories
 {
     public class DogRepository : BaseRepository, IDogRepository
     {
@@ -49,7 +49,7 @@ namespace DogGo.Repositories
                 OwnerId = reader.GetInt32(reader.GetOrdinal("OwnerId")),
                 Breed = reader.GetString(reader.GetOrdinal("Breed")),
                 Notes = reader.GetString(reader.GetOrdinal("Notes")),
-                ImgUrl = reader.GetString(reader.GetOrdinal("ImageUrl")),
+                ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl")),
             };
         }
     }

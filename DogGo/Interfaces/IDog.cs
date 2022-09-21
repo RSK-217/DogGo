@@ -1,6 +1,6 @@
-﻿using DogGo.Models;
+﻿using DogGoMVC.Models;
 
-namespace DogGo.Interfaces
+namespace DogGoMVC.Interfaces
 {
     public interface IDogRepository
     {

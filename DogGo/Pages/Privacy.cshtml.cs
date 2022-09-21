@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace DogGo.Pages
+namespace DogGoMVC.Pages
 {
     public class PrivacyModel : PageModel
     {

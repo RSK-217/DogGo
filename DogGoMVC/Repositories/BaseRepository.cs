@@ -1,6 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 
-namespace DogGo.Repositories;
+namespace DogGoMVC.Repositories;
 
 public abstract class BaseRepository
 {

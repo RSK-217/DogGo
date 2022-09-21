@@ -1,4 +1,4 @@
-﻿namespace DogGo.Models
+﻿namespace DogGoMVC.Models
 {
     public class Dog
     {
@@ -8,7 +8,7 @@
         public Owner Owner { get; set; }    
         public string Breed { get; set; }
         public string Notes { get; set; }
-        public string ImgUrl { get; set; }
+        public string ImageUrl { get; set; }
 
     }
 }

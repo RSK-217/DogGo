@@ -1,7 +1,8 @@
-﻿using DogGo.Models;
+﻿using DogGoMVC.Interfaces;
+using DogGoMVC.Models;
 using Microsoft.Data.SqlClient;
 
-namespace DogGo.Repositories
+namespace DogGoMVC.Repositories
 {
     public class OwnerRepository : BaseRepository, IOwnerRepository
     {

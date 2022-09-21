@@ -1,8 +1,8 @@
-﻿using DogGo.Models;
+﻿using DogGoMVC.Models;
 using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
 
-namespace DogGo.Repositories
+namespace DogGoMVC.Interfaces
 {
     public interface IWalkerRepository
     {

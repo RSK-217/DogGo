@@ -1,4 +1,4 @@
-﻿namespace DogGo.Models
+﻿namespace DogGoMVC.Models
 {
     public class Neighborhood
     {

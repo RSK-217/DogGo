@@ -1,9 +1,9 @@
-﻿using DogGo.Models;
+﻿using DogGoMVC.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 
-namespace DogGo.Repositories
+namespace DogGoMVC.Repositories
 {
     public class WalkerRepository : BaseRepository, IWalkerRepository
     {

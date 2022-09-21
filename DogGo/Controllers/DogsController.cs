@@ -1,10 +1,10 @@
-﻿using DogGo.Interfaces;
-using DogGo.Models;
-using DogGo.Repositories;
+﻿using DogGoMVC.Interfaces;
+using DogGoMVC.Models;
+using DogGoMVC.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DogGo.Controllers
+namespace DogGoMVC.Controllers
 {
     public class DogsController : Controller
     {
