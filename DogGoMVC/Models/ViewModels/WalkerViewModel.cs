@@ -2,8 +2,9 @@
 {
     public class WalkerViewModel
     {
-        public Walker walker { get; set; }
-        public List<Walk> Walks { get; set; }   
+        public Walker Walker { get; set; }
+        public List<Walk> Walks { get; set; } 
+        public int TotalWalkDuration => Walks.Sum(w => w.Duration);
 
     }
 }
