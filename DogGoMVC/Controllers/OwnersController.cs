@@ -11,13 +11,15 @@ namespace DogGoMVC.Controllers
         private readonly IOwnerRepository _ownerRepo;
         private readonly IDogRepository _dogRepo;
         private readonly IWalkerRepository _walkerRepo;
+        private readonly INeighborhoodRepository _neighborhoodRepo;
 
         // ASP.NET will give us an instance of our Walker Repository. This is called "Dependency Injection"
-        public OwnersController(IOwnerRepository ownerRepository, IDogRepository dogRepository, IWalkerRepository walkerRepo)
+        public OwnersController(IOwnerRepository ownerRepository, IDogRepository dogRepository, IWalkerRepository walkerRepo, INeighborhoodRepository neighborhoodRepo)
         {
             _ownerRepo = ownerRepository;
             _dogRepo = dogRepository;
             _walkerRepo = walkerRepo;
+            _neighborhoodRepo = neighborhoodRepo;   
         }
         // GET: OwnersController
         public ActionResult Index()
@@ -48,7 +50,15 @@ namespace DogGoMVC.Controllers
         // GET: OwnersController/Create
         public ActionResult Create()
         {
-            return View();
+            List<Neighborhood> neighborhoods = _neighborhoodRepo.GetAll();
+
+            OwnerFormViewModel vm = new OwnerFormViewModel()
+            {
+                Owner = new Owner(),
+                Neighborhoods = neighborhoods
+            };
+
+            return View(vm);
         }
 
         // POST: OwnersController/Create
@@ -76,9 +86,19 @@ namespace DogGoMVC.Controllers
             if (owner == null)
             {
                 return NotFound();
+            } else
+            {
+                List<Neighborhood> neighborhoods = _neighborhoodRepo.GetAll();
+
+                OwnerFormViewModel vm = new OwnerFormViewModel()
+                {
+                    Owner = owner,
+                    Neighborhoods = neighborhoods
+                };
+
+                return View(vm);
             }
 
-            return View(owner);
         }
 
         // POST: OwnersController/Edit/5
