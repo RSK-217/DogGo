@@ -1,4 +1,6 @@
-﻿namespace DogGoMVC.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DogGoMVC.Models
 {
     public class Walk
     {

@@ -9,7 +9,7 @@
         public int NeighborhoodId { get; set; }
         public string Phone { get; set; }
         public Neighborhood Neighborhood { get; internal set; }
-        public List<Dog> Dogs { get; set; }
+        public List<Dog> Dogs { get; set; } = new List<Dog>();
 
     }
 }

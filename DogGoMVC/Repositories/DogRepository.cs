@@ -1,7 +1,7 @@
 ﻿
 using DogGoMVC.Interfaces;
 using DogGoMVC.Models;
-
+using DogGoMVC.Models.Filters;
 using Microsoft.Data.SqlClient;
 
 namespace DogGoMVC.Repositories
@@ -17,54 +17,34 @@ namespace DogGoMVC.Repositories
                                                    FROM Dog ";
         public DogRepository(IConfiguration config) : base(config) { }
 
-        public List<Dog> GetAllDogs()
+        private string _sqlWhere = "";
+        public List<Dog> GetDogs(DogFilter? filter = null)
         {
-            using (SqlConnection conn = Connection)
+            using (var conn = Connection)
             {
                 conn.Open();
-                using (SqlCommand cmd = conn.CreateCommand())
+                using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = _baseSqlSelect;
-
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    if (filter != null)
                     {
-                        List<Dog> dogs = new List<Dog>();
+                        CreateSqlWhere(filter, cmd);
+                    }
+                    cmd.CommandText = $"{_baseSqlSelect} {_sqlWhere}";
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        List<Dog> results = new();
+
                         while (reader.Read())
                         {
-                            Dog dog = LoadFromData(reader);
-
-                            dogs.Add(dog);
+                            results.Add(LoadFromData(reader));
                         }
-
-                        return dogs;
+                        return results;
                     }
                 }
             }
         }
-        public Dog? GetDogById(int id)
-        {
-            using (SqlConnection conn = Connection)
-            {
-                conn.Open();
-                using (SqlCommand cmd = conn.CreateCommand())
-                {
-                    cmd.CommandText = $"{_baseSqlSelect} WHERE Dog.Id = @id";
 
-                    cmd.Parameters.AddWithValue("@id", id);
-
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        Dog? result = null;
-                        if (reader.Read())
-                        {
-                            return LoadFromData(reader);
-
-                        }
-                        return result;
-                    }
-                }
-            }
-        }
         public List<Dog> GetDogsByOwnerId(int ownerId)
         {
             using (var conn = Connection)
@@ -155,6 +135,23 @@ namespace DogGoMVC.Repositories
 
                     cmd.ExecuteNonQuery();
                 }
+            }
+        }
+
+        private void CreateSqlWhere(DogFilter filter, SqlCommand cmd)
+        {
+            List<string> conditions = new List<string>();
+
+            if (filter.Id != null)
+            {
+                conditions.Add("Id = @Id");
+                cmd.Parameters.AddWithValue("@Id", filter.Id);
+            }
+
+            if (filter.OwnerId != null)
+            {
+                conditions.Add("OwnerId = @OwnerId");
+                cmd.Parameters.AddWithValue("@OwnerId", filter.OwnerId);
             }
         }
         private Dog LoadFromData(SqlDataReader reader)

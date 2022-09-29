@@ -1,8 +1,10 @@
 ﻿using DogGoMVC.Interfaces;
 using DogGoMVC.Models;
+using DogGoMVC.Models.Filters;
 using DogGoMVC.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace DogGoMVC.Controllers
 {
@@ -17,7 +19,7 @@ namespace DogGoMVC.Controllers
         // GET: DogController
         public ActionResult Index()
         {
-            List<Dog> dogs = _dogRepo.GetAllDogs(); 
+            List<Dog> dogs = _dogRepo.GetDogs(); 
             
             return View(dogs);
         }
@@ -25,12 +27,7 @@ namespace DogGoMVC.Controllers
         // GET: DogController/Details/5
         public ActionResult Details(int id)
         {
-            Dog dog = _dogRepo.GetDogById(id);
-
-            if (dog == null)
-            {
-                return NotFound();
-            }
+            Dog? dog = _dogRepo.GetDogs(new DogFilter { Id = id }).FirstOrDefault();
 
             return View(dog);
         }
@@ -61,12 +58,7 @@ namespace DogGoMVC.Controllers
         // GET: DogController/Edit/5
         public ActionResult Edit(int id)
         {
-            Dog dog = _dogRepo.GetDogById(id);
-
-            if (dog == null)
-            {
-                return NotFound();
-            }
+            Dog? dog = _dogRepo.GetDogs(new DogFilter { Id = id }).FirstOrDefault();
 
             return View(dog);
         }
@@ -90,7 +82,7 @@ namespace DogGoMVC.Controllers
         // GET: DogController/Delete/5
         public ActionResult Delete(int id)
         {
-            Dog dog = _dogRepo.GetDogById(id);
+            Dog? dog = _dogRepo.GetDogs(new DogFilter { Id = id }).FirstOrDefault();
 
             return View(dog);
         }

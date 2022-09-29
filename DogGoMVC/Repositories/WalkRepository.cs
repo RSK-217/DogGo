@@ -34,7 +34,7 @@ namespace DogGoMVC.Repositories
                         while (reader.Read())
                         {
                             Walk walk = LoadFromData(reader);
-                            //walk.Dog.Owner.Name = reader.GetString(reader.GetOrdinal("OwnerName"));
+                            walk.Dog.Owner.Name = reader.GetString(reader.GetOrdinal("OwnerName"));
                             results.Add(walk);
                         }
 

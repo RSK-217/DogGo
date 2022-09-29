@@ -20,24 +20,24 @@ namespace DogGoMVC.Repositories
 
         public List<Owner> GetAllOwners()
         {
-            using (SqlConnection conn = Connection)
+            using (var conn = Connection)
             {
                 conn.Open();
-                using (SqlCommand cmd = conn.CreateCommand())
+                using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = _baseSqlSelect;
 
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        List<Owner> owners = new List<Owner>();
+                        var results = new List<Owner>();
                         while (reader.Read())
                         {
-                            Owner owner = LoadFromData(reader);
+                            var owner = LoadFromData(reader);
 
-                            owners.Add(owner);
+                            results.Add(owner);
                         }
 
-                        return owners;
+                        return results;
                     }
                 }
             }

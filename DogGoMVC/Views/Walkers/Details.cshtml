@@ -1,4 +1,5 @@
-﻿@model DogGoMVC.Models.ViewModels.WalkerViewModel
+﻿@using DogGoMVC.Helpers
+@model DogGoMVC.Models.ViewModels.WalkerViewModel
 
 @{
 	ViewData["Title"] = "Walker Profile";
@@ -34,16 +35,16 @@
 					{
 						<tr>
 							<td>@walk.Date.ToShortDateString()</td>
-							@*<td>@walk.Dog.Owner.Name</td>*@
-							@*<td>@Helpers.DurationToFullTime(walk.Duration)</td>*@
+							<td>@walk.Dog.Owner.Name</td>
+							<td>@Helpers.DurationToFullTime(walk.Duration)</td>
 						</tr>
 					}
 				</tbody>
 			</table>
 		</div>
-		@*<div class="col-5">
+		<div class="col-5">
 			Total Walk Time: @Helpers.DurationToFullTime(Model.TotalWalkDuration)
-		</div>*@
+		</div>
 	</div>
 </div>
 <div>
