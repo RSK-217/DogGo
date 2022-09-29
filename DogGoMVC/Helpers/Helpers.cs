@@ -22,4 +22,8 @@ public class Helpers
         return durationInMinutes * 60;
     }
 
+    public static int DurationFromSecondsToMinutes(int durationInSeconds)
+    {
+        return durationInSeconds / 60;
+    }
 }

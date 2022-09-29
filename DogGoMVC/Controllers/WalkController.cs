@@ -1,6 +1,7 @@
 ﻿using DogGoMVC.Interfaces;
 using DogGoMVC.Models;
 using DogGoMVC.Models.ViewModels;
+using DogGoMVC.Helpers;
 using DogGoMVC.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,9 @@ namespace DogGoMVC.Controllers
         // GET: WalkController
         public ActionResult Index()
         {
-            return View();
+            List<Walk> walks = _walkRepo.GetAllWalks();
+            
+            return View(walks);
         }
 
         // GET: WalkController/Details/5

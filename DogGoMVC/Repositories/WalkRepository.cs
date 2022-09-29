@@ -1,7 +1,8 @@
 ﻿using DogGoMVC.Models;
+using DogGoMVC.Helpers;
 using DogGoMVC.Interfaces;
 using Microsoft.Data.SqlClient;
-using DogGoMVC.Helpers;
+
 
 namespace DogGoMVC.Repositories
 {
@@ -9,6 +10,43 @@ namespace DogGoMVC.Repositories
     {
         public WalkRepository(IConfiguration config) : base(config) { }
 
+        private readonly string _baseSqlSelect = @"SELECT Walks.Id,
+                                    	   [Date],
+                                    	   Duration,
+                                    	   WalkerId,
+                                           Walker.[Name] AS WalkerName, 
+                                    	   DogId,
+                                           Dog.[Name] AS DogName 
+                                    FROM Walks
+                                    INNER JOIN Dog ON Dog.Id = Walks.DogId
+                                    INNER JOIN Walker ON Walker.Id = Walks.WalkerId";
+                                    
+        public List<Walk> GetAllWalks()
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = _baseSqlSelect;
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        var results = new List<Walk>();
+                        
+                        while (reader.Read())
+                        {
+                            
+                            var walk = LoadFromData(reader);
+                            walk.Duration = Helpers.Helpers.DurationFromSecondsToMinutes(walk.Duration);
+                            results.Add(walk);
+                        }
+
+                        return results;
+                    }
+                }
+            }
+        }
         public List<Walk> GetWalksByWalker(int id)
         {
             using (var conn = Connection)
@@ -80,6 +118,8 @@ namespace DogGoMVC.Repositories
                 Duration = reader.GetInt32(reader.GetOrdinal("Duration")),
                 WalkerId = reader.GetInt32(reader.GetOrdinal("WalkerId")),
                 DogId = reader.GetInt32(reader.GetOrdinal("DogId")),
+                Dog = new Dog { Name = reader.GetString(reader.GetOrdinal("DogName")) },
+                Walker = new Walker { Name = reader.GetString(reader.GetOrdinal("WalkerName")) }
             };
         }
     }
