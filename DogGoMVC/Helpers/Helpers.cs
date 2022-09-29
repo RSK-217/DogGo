@@ -21,4 +21,5 @@ public class Helpers
     {
         return durationInMinutes * 60;
     }
+
 }

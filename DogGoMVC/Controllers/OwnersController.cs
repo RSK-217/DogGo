@@ -4,6 +4,7 @@ using DogGoMVC.Models.Filters;
 using DogGoMVC.Models.ViewModels;
 using DogGoMVC.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace DogGoMVC.Controllers
 {
@@ -15,10 +16,10 @@ namespace DogGoMVC.Controllers
         private readonly INeighborhoodRepository _neighborhoodRepo;
 
         // ASP.NET will give us an instance of our Walker Repository. This is called "Dependency Injection"
-        public OwnersController(IOwnerRepository ownerRepository, IDogRepository dogRepository, IWalkerRepository walkerRepo, INeighborhoodRepository neighborhoodRepo)
+        public OwnersController(IOwnerRepository ownerRepo, IDogRepository dogRepo, IWalkerRepository walkerRepo, INeighborhoodRepository neighborhoodRepo)
         {
-            _ownerRepo = ownerRepository;
-            _dogRepo = dogRepository;
+            _ownerRepo = ownerRepo;
+            _dogRepo = dogRepo;
             _walkerRepo = walkerRepo;
             _neighborhoodRepo = neighborhoodRepo;   
         }

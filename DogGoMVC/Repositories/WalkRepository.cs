@@ -1,6 +1,7 @@
 ﻿using DogGoMVC.Models;
 using DogGoMVC.Interfaces;
 using Microsoft.Data.SqlClient;
+using DogGoMVC.Helpers;
 
 namespace DogGoMVC.Repositories
 {
@@ -40,6 +41,33 @@ namespace DogGoMVC.Repositories
 
                         return results;
                     }
+                }
+            }
+        }
+
+        public void CreateWalk(Walk walk)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO Walks (
+                                            [Date],
+                                            Duration,
+                                            WalkerId,
+                                            DogId)
+                                        VALUES (
+                                            @Date,
+                                            @Duration,
+                                            @WalkerId,
+                                            @DogId)";
+                    cmd.Parameters.AddWithValue("@Date", walk.Date);
+                    cmd.Parameters.AddWithValue("@Duration", Helpers.Helpers.DurationFromMinutesToSeconds(walk.Duration));
+                    cmd.Parameters.AddWithValue("@WalkerId",walk.WalkerId);
+                    cmd.Parameters.AddWithValue("@DogId",walk.Date);
+
+                    cmd.ExecuteNonQuery();
                 }
             }
         }
